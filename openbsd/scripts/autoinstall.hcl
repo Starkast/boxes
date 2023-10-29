@@ -1,0 +1,13 @@
+System hostname = openbsd${major_version}${minor_version}
+IPv4 address = dhcp
+IPv6 address = none
+DNS domain = local
+IPv6 default router = none
+Password for root = ${ssh_password}
+Allow root ssh login = yes
+What timezone are you in = UTC
+Location of sets = http
+HTTP Server = ${mirror}
+Server directory = pub/OpenBSD/${major_version}.${minor_version}/${arch}/
+Set name(s) = -game*.tgz -x*.tgz
+Continue without verification = yes
