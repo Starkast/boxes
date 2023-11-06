@@ -3,10 +3,10 @@
     "ftp_proxy": "{{env `ftp_proxy`}}",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
-    "mirror": "https://ftp.lysator.liu.se",
+    "mirror": "https://fastly.cdn.openbsd.org",
     "boot_wait": "30s",
     "major_version": "7",
-    "minor_version": "1"
+    "minor_version": "3"
   },
   "provisioners": [
     {
@@ -26,7 +26,7 @@
   ],
   "builders": [
     {
-      "type": "vmware-iso",
+      "type": "virtualbox-iso",
       "boot_command": [
         "S<enter>",
         "cat <<EOF >>install.conf<enter>",
@@ -44,22 +44,29 @@
       ],
       "boot_wait": "{{user `boot_wait`}}",
       "disk_size": 10140,
+      "guest_additions_mode": "disable",
       "guest_os_type": "OpenBSD_64",
-      "iso_checksum": "sha256:b70b78a14ce992007615ad6693b61d930344169b9480a63c33c88da35453fc2d",
-      "iso_url": "{{user `mirror`}}/pub/OpenBSD/{{user `major_version`}}.{{user `minor_version`}}/arm64/install{{user `major_version`}}{{user `minor_version`}}.img",
-      "output_directory": "packer-openbsd-{{user `major_version`}}.{{user `minor_version`}}-arm64-virtualbox",
+      "iso_checksum": "sha256:fdf1210ffe87213eeca5f1d317e8b19364cbae83545cdfc7845098a53fc79a60",
+      "iso_url": "{{user `mirror`}}/pub/OpenBSD/{{user `major_version`}}.{{user `minor_version`}}/amd64/install{{user `major_version`}}{{user `minor_version`}}.iso",
+      "output_directory": "packer-openbsd-{{user `major_version`}}.{{user `minor_version`}}-amd64-virtualbox",
       "shutdown_command": "/sbin/halt -p",
       "ssh_username": "root",
       "ssh_password": "vagrant",
       "ssh_port": 22,
       "ssh_wait_timeout": "10000s",
-      "vm_name": "openbsd-{{user `major_version`}}.{{user `minor_version`}}-arm64"
+      "vboxmanage": [
+        [ "modifyvm", "{{.Name}}", "--memory", "384" ],
+        [ "modifyvm", "{{.Name}}", "--cpus", "1" ],
+        [ "modifyvm", "{{.Name}}", "--ioapic", "off" ]
+      ],
+      "virtualbox_version_file": ".vbox_version",
+      "vm_name": "openbsd-{{user `major_version`}}.{{user `minor_version`}}-amd64"
     }
   ],
   "post-processors": [
     [{
       "type": "vagrant",
-      "output": "openbsd-{{user `major_version`}}.{{user `minor_version`}}-arm64-{{.Provider}}.box",
+      "output": "openbsd-{{user `major_version`}}.{{user `minor_version`}}-amd64-{{.Provider}}.box",
       "vagrantfile_template": "Vagrantfile.template"
     }]
   ],
