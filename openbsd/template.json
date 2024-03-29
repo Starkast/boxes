@@ -3,7 +3,7 @@
     "ftp_proxy": "{{env `ftp_proxy`}}",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
-    "mirror": "https://fastly.cdn.openbsd.org",
+    "mirror": "https://ftp.lysator.liu.se",
     "boot_wait": "30s",
     "major_version": "7",
     "minor_version": "4"
