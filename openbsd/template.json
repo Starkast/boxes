@@ -6,7 +6,7 @@
     "mirror": "https://cdn.openbsd.org",
     "boot_wait": "30s",
     "major_version": "7",
-    "minor_version": "7"
+    "minor_version": "8"
   },
   "provisioners": [
     {
@@ -46,7 +46,7 @@
       "disk_size": 10140,
       "guest_additions_mode": "disable",
       "guest_os_type": "OpenBSD_64",
-      "iso_checksum": "sha256:da0106e39463f015524dca806f407c37a9bdd17e6dfffe533b06a2dd2edd8a27",
+      "iso_checksum": "sha256:a228d0a1ef558b4d9ec84c698f0d3ffd13cd38c64149487cba0f1ad873be07b2",
       "iso_url": "{{user `mirror`}}/pub/OpenBSD/{{user `major_version`}}.{{user `minor_version`}}/amd64/install{{user `major_version`}}{{user `minor_version`}}.iso",
       "output_directory": "packer-openbsd-{{user `major_version`}}.{{user `minor_version`}}-amd64-virtualbox",
       "shutdown_command": "/sbin/halt -p",
