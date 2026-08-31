@@ -2,6 +2,10 @@
 
 Build [Vagrant] boxes with [Packer]. Hosted [on Vagrant Cloud].
 
+The OpenBSD **arm64 libvirt** box is the exception: Packer cannot drive
+OpenBSD's serial-console installer, so it is built with a shell script that runs
+QEMU/KVM headlessly on any Linux host. See [`openbsd/qemu/`](openbsd/qemu/).
+
 ## Build a box
 
 You need to change the working directory
