@@ -11,8 +11,11 @@ pkg_add sudo--
 # passwordless sudo for Vagrant
 echo "vagrant ALL=(ALL) NOPASSWD: SETENV: ALL" >> /etc/sudoers
 
-# ansible support
+# ansible support; its inventory pins the interpreter to /usr/local/bin/python3,
+# which pkg_add does not create (it ships versioned pythonX.Y only).
 pkg_add "python%3"
+python3_bin=$(ls /usr/local/bin/python3.[0-9]* 2>/dev/null | grep -E 'python3\.[0-9]+$' | head -1)
+[ -n "$python3_bin" ] && ln -sf "$python3_bin" /usr/local/bin/python3
 
 # ensure consistent resolvable hostname
 hostname=$(hostname -s)
