@@ -22,3 +22,13 @@ Used to build `arm64` boxes.
 1. Convert miniroot image to VMware disk: `qemu-img convert -f raw -O vmdk miniroot79.img vmware-vmx/miniroot.vmdk`
 1. Validate box config: `packer validate vmware-vmx.pkr.hcl`
 1. Build the box: `packer build vmware-vmx.pkr.hcl`
+
+If packer waits for SSH forever although the VM is up, macOS Local Network
+privacy is blocking the (ad-hoc signed) vmware plugin from reaching the guest.
+Relay SSH through localhost with an Apple-signed tool instead:
+
+    mkfifo /tmp/relay
+    while true; do nc -l 127.0.0.1 22079 < /tmp/relay | nc <guest ip> 22 > /tmp/relay; done
+    packer build -var ssh_host=127.0.0.1 -var ssh_port=22079 vmware-vmx.pkr.hcl
+
+The guest IP is in `/var/db/vmware/vmnet-dhcpd-vmnet8.leases`.
