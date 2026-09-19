@@ -61,6 +61,18 @@ variable "ssh_password" {
   default = "vagrant"
 }
 
+# macOS Local Network privacy blocks the (ad-hoc signed) plugin from reaching
+# the guest, set these to connect through a relay on localhost instead
+variable "ssh_host" {
+  type    = string
+  default = ""
+}
+
+variable "ssh_port" {
+  type    = number
+  default = 22
+}
+
 variable "root_ssh_password" {
   type    = string
   default = "vagrant"
@@ -115,7 +127,8 @@ source "vmware-vmx" "openbsd" {
   shutdown_command     = "/sbin/halt -p"
   ssh_username         = "root"
   ssh_password         = "${var.root_ssh_password}"
-  ssh_port             = 22
+  ssh_host             = var.ssh_host
+  ssh_port             = var.ssh_port
   ssh_wait_timeout     = "10000s"
   vm_name              = "openbsd-${var.major_version}.${var.minor_version}-${var.arch}"
 }
