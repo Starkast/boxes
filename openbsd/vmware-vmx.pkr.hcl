@@ -85,6 +85,8 @@ source "vmware-vmx" "openbsd" {
   # https://github.com/hashicorp/packer-plugin-vmware/blob/v1.0.10/example/pkrvars/debian/fusion-13.pkrvars.hcl
   vmx_data             = {
     "cpuid.coresPerSocket"    = "2"
+    # OpenBSD expects the RTC in UTC, Fusion defaults to host local time
+    "rtc.diffFromUTC"         = "0"
     "ethernet0.pciSlotNumber" = "32"
     "svga.autodetect"         = true
     "usb_xhci.present"        = true
