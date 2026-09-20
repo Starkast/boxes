@@ -1,4 +1,5 @@
 /		256M
+swap		  2G
 /usr		  4G
 /usr/local	  4G
 /tmp		  1G
