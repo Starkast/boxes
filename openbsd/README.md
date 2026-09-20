@@ -23,6 +23,10 @@ Used to build `arm64` boxes.
 1. Validate box config: `packer validate vmware-vmx.pkr.hcl`
 1. Build the box: `packer build vmware-vmx.pkr.hcl`
 
+An interrupted build leaves the half-installed VM behind in `packer_cache/`,
+and the next build boots that disk instead of installing from the miniroot.
+Remove the directory before building again.
+
 If packer waits for SSH forever although the VM is up, macOS Local Network
 privacy is blocking the (ad-hoc signed) vmware plugin from reaching the guest.
 Relay SSH through localhost with an Apple-signed tool instead:
