@@ -38,7 +38,7 @@ variable "major_version" {
 
 variable "minor_version" {
   type    = string
-  default = "8"
+  default = "9"
 }
 
 variable "arch" {
@@ -59,6 +59,18 @@ variable "ssh_username" {
 variable "ssh_password" {
   type    = string
   default = "vagrant"
+}
+
+# macOS Local Network privacy blocks the (ad-hoc signed) plugin from reaching
+# the guest, set these to connect through a relay on localhost instead
+variable "ssh_host" {
+  type    = string
+  default = ""
+}
+
+variable "ssh_port" {
+  type    = number
+  default = 22
 }
 
 variable "root_ssh_password" {
@@ -85,6 +97,11 @@ source "vmware-vmx" "openbsd" {
   # https://github.com/hashicorp/packer-plugin-vmware/blob/v1.0.10/example/pkrvars/debian/fusion-13.pkrvars.hcl
   vmx_data             = {
     "cpuid.coresPerSocket"    = "2"
+    # Two CPUs so the installer picks the bsd.mp kernel, a box built on one
+    # CPU ignores any vCPUs given to it later
+    "numvcpus"                = "2"
+    # OpenBSD expects the RTC in UTC, Fusion defaults to host local time
+    "rtc.diffFromUTC"         = "0"
     "ethernet0.pciSlotNumber" = "32"
     "svga.autodetect"         = true
     "usb_xhci.present"        = true
@@ -113,7 +130,8 @@ source "vmware-vmx" "openbsd" {
   shutdown_command     = "/sbin/halt -p"
   ssh_username         = "root"
   ssh_password         = "${var.root_ssh_password}"
-  ssh_port             = 22
+  ssh_host             = var.ssh_host
+  ssh_port             = var.ssh_port
   ssh_wait_timeout     = "10000s"
   vm_name              = "openbsd-${var.major_version}.${var.minor_version}-${var.arch}"
 }
