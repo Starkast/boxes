@@ -33,12 +33,12 @@ variable "https_proxy" {
 
 variable "major_version" {
   type    = string
-  default = "7"
+  default = "8"
 }
 
 variable "minor_version" {
   type    = string
-  default = "9"
+  default = "0"
 }
 
 variable "arch" {
